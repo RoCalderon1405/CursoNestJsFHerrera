@@ -10,7 +10,7 @@
 docker-compose up -d
 ```
 
-2.`npm install`
+2. ```npm install```
 
 3. Clonar el archivo `.en.template` y renombrarlo a ` .env`
 
