@@ -88,7 +88,6 @@ export class ProductsService {
   async findOnePlain(term: string) {
     const { images = [], ...rest } = await this.findOne(term);
 
-    console.log(images);
     return { ...rest, images: images.map((image) => image.url) };
   }
 
@@ -122,9 +121,9 @@ export class ProductsService {
       return this.findOnePlain(id);
     } catch (error) {
       await queryRunner.rollbackTransaction();
-      
+
       this.handleDBExceptions(error);
-    }finally{
+    } finally {
       queryRunner.release();
     }
 
@@ -146,5 +145,15 @@ export class ProductsService {
 
     this.logger.error(error);
     throw new InternalServerErrorException('Ayuda!');
+  }
+
+  async deleteAllProducts() {
+    const query = this.productRepository.createQueryBuilder('product');
+
+    try {
+      return await query.delete().where({}).execute();
+    } catch (error) {
+      this.handleDBExceptions(error);
+    }
   }
 }
