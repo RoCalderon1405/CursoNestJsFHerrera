@@ -5,5 +5,13 @@ export const fileFilter = (
 ) => {
   if (!file) return callback(new Error('File is empty'), false);
 
-  callback(null, true);
+  const fileExtension = file.mimetype.split('/')[1];
+  const validExtension = ['jpg', 'jpeg', 'png', 'gif'];
+  console.log(file);
+
+  if (validExtension.includes(fileExtension)) {
+    return callback(null, true);
+  }
+
+  callback(null, false);
 };
