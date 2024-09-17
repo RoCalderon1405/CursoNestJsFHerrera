@@ -1,9 +1,15 @@
 import { IsArray, IsBoolean, IsString } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('text', {
@@ -21,7 +27,7 @@ export class User {
   fullName: string;
 
   @Column('bool', {
-    unique: true,
+    default: true,
   })
   @IsBoolean()
   isActive: boolean;
@@ -32,4 +38,14 @@ export class User {
   })
   @IsArray()
   roles: string[];
+
+  @BeforeInsert()
+  checkFieldBeforeInsert() {
+    this.email = this.email.toLowerCase().trim();
+  }
+
+  @BeforeUpdate()
+  checkFieldBeforeUpdate() {
+    this.checkFieldBeforeInsert();
+  }
 }
