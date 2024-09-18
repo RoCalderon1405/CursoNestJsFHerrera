@@ -1,11 +1,14 @@
-import { IsArray, IsBoolean, IsString } from 'class-validator';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
+import { IsArray, IsBoolean, IsString } from 'class-validator';
+import { Product } from 'src/products/entities';
 
 @Entity('users')
 export class User {
@@ -38,6 +41,9 @@ export class User {
   })
   @IsArray()
   roles: string[];
+
+  @OneToMany(() => Product, (product) => product.user)
+  prodct: Product;
 
   @BeforeInsert()
   checkFieldBeforeInsert() {
